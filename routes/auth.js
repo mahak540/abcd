@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require("express");
 const router = express.Router();
 const { generateOTP, sendEmail } = require("../middleware/email.js");
-const User = require("../schemas/user.js");
+const User = require("../schemas/user.js")
 const localstrategy = require("passport-local");
 const passport = require("passport")
 
