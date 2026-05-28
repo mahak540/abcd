@@ -17,7 +17,7 @@ const app = express();
 
 //app.use(cors());
 app.use(cors({
-  origin: "https://frontend-8qok.vercel.app",
+  origin: "https://frontend-lilac-beta-24.vercel.app",
   credentials: true
 }));
 app.use(bodyParser.json());
