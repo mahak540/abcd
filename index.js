@@ -1,22 +1,35 @@
 require("dotenv").config();
-
 const express = require("express");
+const axios = require("axios");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const { HoldingsModel } = require("./model/HoldingsModel");
-
 const { PositionsModel } = require("./model/PositionsModel");
 const { OrdersModel } = require("./model/OrdersModel");
-
+const session = require("express-session")
+const passport = require("passport")
+const authRoutes = require("./routes/auth.js")
 // const PORT = process.env.PORT || 3002;
-const PORT = 3002;
+const PORT = 5000;
 const uri = process.env.MONGO_URL;
-
 const app = express();
 
-app.use(cors());
+//app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
 app.use(bodyParser.json());
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
+app.use(session({
+    secret:"1234",
+    resave:false,
+    saveUninitialized:false,
+}))
+
+
 
 // app.get("/addHoldings", async (req, res) => {
 //   let tempHoldings = [
@@ -208,7 +221,10 @@ app.post("/newOrder", async (req, res) => {
   newOrder.save();
   res.send("Order saved!");
 });
+app.use(passport.initialize());
+app.use(passport.session());
 
+app.use("/",authRoutes);
 app.listen(PORT, () => {
   console.log("App started!");
   mongoose.connect(uri);
