@@ -30,14 +30,17 @@ router.post("/signup", async (req, res) => {
     }
 
     let user = await User.findOne({ email });
- if (user && user.isVerified === true) {
+
+    if (user && user.isVerified === true) {
   return res.status(400).json({
     success: false,
     message: "User already exists"
   });
-    if (!user) {
-      user = new User({ email });
-    }
+}
+
+if (!user) {
+  user = new User({ email });
+}
 
     // Generate OTP
     const otp = generateOTP();
